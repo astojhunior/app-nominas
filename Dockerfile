@@ -51,3 +51,9 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
 # Variables típicas para producción
 ENV APP_ENV=production \
     APP_DEBUG=false
+
+# Entrypoint: migraciones y seed opcional, luego Apache
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]
