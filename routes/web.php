@@ -25,7 +25,16 @@ use App\Http\Controllers\ReportesPersonalController;
 | LOGIN ADMINISTRADOR
 |--------------------------------------------------------------------------
 */
+Route::get('/debug-log', function () {
+    // Opcional: token simple para evitar que cualquiera lo vea en prod
+    $token = request('token');
+    $allowed = app()->environment('local') || $token === env('DEBUG_LOG_TOKEN');
 
+    abort_unless($allowed, 403);
+
+    $log = @file_get_contents(storage_path('logs/laravel.log')) ?: 'No log file';
+    return response('<pre>'.e($log).'</pre>', 200, ['Content-Type' => 'text/html; charset=utf-8']);
+});
 Route::get('/',                 [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::get('/admin/login',      [AdminAuthController::class, 'showLoginForm'])->name('admin.login.form');
 Route::post('/admin/login',     [AdminAuthController::class, 'login'])->name('admin.login.post');
