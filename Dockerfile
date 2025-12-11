@@ -3,7 +3,7 @@ FROM php:8.2-apache
 # Habilitar mod_rewrite para Laravel
 RUN a2enmod rewrite
 
-# Instalar dependencias del sistema necesarias para extensiones zip y gd
+# Instalar dependencias del sistema necesarias para extensiones zip, gd y pdo_mysql
 RUN apt-get update \
     && apt-get install -y \
     libzip-dev \
@@ -14,7 +14,7 @@ RUN apt-get update \
     unzip \
     curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd zip \
+    && docker-php-ext-install gd zip pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
 
 # Instalar Composer
