@@ -34,6 +34,18 @@ Route::get('/run-migrations', function () {
     }
 });
 
+Route::get('/fix', function () {
+    try {
+        \Artisan::call('config:clear');
+        \Artisan::call('cache:clear');
+        \Artisan::call('route:clear');
+        \Artisan::call('view:clear');
+
+        return 'OK';
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
+});
 
 
 Route::get('/',                 [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
