@@ -11,7 +11,7 @@ if [ "${RUN_SEED}" = "1" ]; then
   php artisan db:seed --class=Database\\Seeders\\AdminSeeder --force 2>&1 || true
 fi
 
-# Ensure admin user exists (create if not)
+# Ensure admin user exists and password is correct
 php artisan tinker --execute="
 \$admin = App\Models\Admin::where('email', 'admin@nominaempleados.com')->first();
 if (!\$admin) {
@@ -22,7 +22,8 @@ if (!\$admin) {
   ]);
   echo 'Admin user created.';
 } else {
-  echo 'Admin user already exists.';
+  \$admin->update(['password' => bcrypt('admin123')]);
+  echo 'Admin password updated.';
 }
 " || true
 
