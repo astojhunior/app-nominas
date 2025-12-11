@@ -25,9 +25,18 @@ use App\Http\Controllers\ReportesPersonalController;
 | LOGIN ADMINISTRADOR
 |--------------------------------------------------------------------------
 */
-Route::get('/debug-log', function () {
-    return nl2br(e(file_get_contents(storage_path('logs/laravel.log'))));
+Route::get('/env-check', function () {
+    return [
+        'app_key' => config('app.key'),
+        'app_env' => config('app.env'),
+        'debug' => config('app.debug'),
+        'db' => [
+            'host' => config('database.connections.mysql.host'),
+            'database' => config('database.connections.mysql.database'),
+        ]
+    ];
 });
+
 
 Route::get('/',                 [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::get('/admin/login',      [AdminAuthController::class, 'showLoginForm'])->name('admin.login.form');
