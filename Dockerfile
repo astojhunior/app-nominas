@@ -6,13 +6,13 @@ RUN a2enmod rewrite
 # Instalar dependencias del sistema necesarias para extensiones zip y gd
 RUN apt-get update \
     && apt-get install -y \
-       libzip-dev \
-       libpng-dev \
-       libjpeg-dev \
-       libfreetype6-dev \
-       git \
-       unzip \
-       curl \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    git \
+    unzip \
+    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd zip \
     && rm -rf /var/lib/apt/lists/*
@@ -37,10 +37,11 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
 
 # Construir assets si aplica
 RUN if [ -f package.json ]; then \
-      curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-      && apt-get install -y nodejs \
-      && npm ci --omit=dev \
-      && npm run build; \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm ci \
+    && npm run build \
+    && npm prune --production; \
     fi
 
 # Permisos para storage y bootstrap/cache
