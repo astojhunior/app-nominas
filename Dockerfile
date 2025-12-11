@@ -51,5 +51,3 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
 # Variables típicas para producción
 ENV APP_ENV=production \
     APP_DEBUG=false
-
-CMD php artisan migrate --force && apache2-foreground

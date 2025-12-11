@@ -25,17 +25,15 @@ use App\Http\Controllers\ReportesPersonalController;
 | LOGIN ADMINISTRADOR
 |--------------------------------------------------------------------------
 */
-Route::get('/env-check', function () {
-    return [
-        'app_key' => config('app.key'),
-        'app_env' => config('app.env'),
-        'debug' => config('app.debug'),
-        'db' => [
-            'host' => config('database.connections.mysql.host'),
-            'database' => config('database.connections.mysql.database'),
-        ]
-    ];
+Route::get('/run-migrations', function () {
+    try {
+        \Artisan::call('migrate', ['--force' => true]);
+        return "Migraciones ejecutadas correctamente.";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
 });
+
 
 
 Route::get('/',                 [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
